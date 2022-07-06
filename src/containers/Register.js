@@ -19,6 +19,10 @@ import SignupHeader from "./SignupHeader";
 import Axios from "axios";
 
 const Register = (props) => {
+
+  const [userPhone, setUserPhone] = React.useState("");
+  const [userAddress, setUserAddress] = React.useState("");
+
   const [userFirstName, setFirstName] = React.useState("");
   const [userLastName, setLastName] = React.useState("");
   const [compnayName, setCompanyName] = React.useState("");
@@ -39,6 +43,8 @@ const Register = (props) => {
         method: "POST",
         url: `${apiPath}/userRegister`,
         data: {
+          phone:userPhone,
+          address:userAddress,
           first_name: userFirstName,
           last_name: userLastName,
           name: compnayName,
@@ -53,12 +59,12 @@ const Register = (props) => {
         .then((response) => {
           if (response.data.resp === 1) {
             // toast.error("User created successfully!");
-            // setFirstName("");
-            // setLastName("");
-            // setCompanyName("");
-            // setUserEmail("");
-            // setUserPassword("");
-            // setConfirmPassword("");
+            setFirstName("");
+            setLastName("");
+            setCompanyName("");
+            setUserEmail("");
+            setUserPassword("");
+            setConfirmPassword("");
             alert(response.data.message);
           } else {
             showError(response.data.message);
@@ -75,33 +81,33 @@ const Register = (props) => {
           }
         });
 
-      options.url = "/api/userRegister";
+      // options.url = "/api/userRegister";
 
-      const data1 = await Axios(options);
-      data1
-        .then((response) => {
-          if (response.data.resp === 1) {
-            // setFirstName("");
-            // setLastName("");
-            // setCompanyName("");
-            // setUserEmail("");
-            // setUserPassword("");
-            // setConfirmPassword("");
-            // alert(response.data.message);
-          } else {
-            showError(response.data.message);
-          }
-        })
-        .catch((err) => {
-          if (err.response) {
-            const { data, status } = err.response;
+      // const data1 = await Axios(options);
+      // data1
+      //   .then((response) => {
+      //     if (response.data.resp === 1) {
+      //       // setFirstName("");
+      //       // setLastName("");
+      //       // setCompanyName("");
+      //       // setUserEmail("");
+      //       // setUserPassword("");
+      //       // setConfirmPassword("");
+      //       // alert(response.data.message);
+      //     } else {
+      //       showError(response.data.message);
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     if (err.response) {
+      //       const { data, status } = err.response;
 
-            if (status === 422) {
-              alert("Please correct highlighted erros");
-              printError(data);
-            }
-          }
-        });
+      //       if (status === 422) {
+      //         alert("Please correct highlighted erros");
+      //         printError(data);
+      //       }
+      //     }
+      //   });
     } catch (err) {
       console.log(err);
     }
@@ -186,6 +192,30 @@ const Register = (props) => {
                 value={userEmail}
               />
             </div>
+
+            <div className="form-group my-30">
+              <input
+                type="text"
+                name="phone"
+                placeholder="Phone"
+                className="form-control p-4"
+                onChange={(e) => setUserPhone(e.target.value)}
+                value={userPhone}
+              />
+            </div>
+
+            <div className="form-group my-30">
+              <input
+                type="text"
+                name="address"
+                placeholder="Address"
+                className="form-control p-4"
+                onChange={(e) => setUserAddress(e.target.value)}
+                value={userAddress}
+              />
+            </div>
+
+            
 
             <div className="form-group my-30">
               <input

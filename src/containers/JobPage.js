@@ -5,6 +5,10 @@ import axios from "axios";
 import BannerEmployer from "./BannerEmployer";
 import Loader from "./Loader";
 import { apiPath } from "../utils/Consts";
+import { NotificationManager } from "react-notifications";
+
+
+
 
 class JobPage extends Component {
   constructor(props) {
@@ -66,12 +70,14 @@ class JobPage extends Component {
 
       axios
         .post(apiPath + "/apply-for-job", {
-          job_id: this.state.job.id,
+          job_id: this.state.job._id,
+          userid: JSON.parse(localStorage.UserAuth)._id
         })
         .then((response) => {
           if (response.data.resp === 1) {
             //show success message
-            alert("Successfuly applied for job");
+            NotificationManager.success("Successfuly applied for job", "Done");
+            // alert("Successfuly applied for job");
           } else if (response.data.resp === 0) {
             alert(response.data.message);
           } else {
@@ -100,7 +106,7 @@ class JobPage extends Component {
                   <h5 className="mb-3 mr-5">Company Details</h5>
                   <ul>
                     <li>
-                      Name: <span>{employer.address}</span>
+                      Name: <span>{employer.name}</span>
                     </li>
                     <li>
                       Address: <span>{employer.address}</span>

@@ -22,7 +22,7 @@ class Jobseeker extends Component {
 
   componentDidMount() {
     axios
-      .get(apiPath + "/jobseeker")
+      .get(apiPath + "/jobseeker?id="+JSON.parse(localStorage.UserAuth)._id)
       .then((response) => {
         if (response.data.resp === 1) {
           this.setState({

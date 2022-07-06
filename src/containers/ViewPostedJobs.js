@@ -4,6 +4,7 @@ import SingleJob from "./ViewSingleJob";
 import { confirmDelete } from "../utils/Helpers";
 import { apiPath } from "../utils/Consts";
 import Loader from "./Loader";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 class ViewJobPosted extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class ViewJobPosted extends Component {
   componentDidMount() {
     if (this.state.isLoading) {
       axios
-        .get(apiPath + "/employer/view-posted-jobs")
+        .get(apiPath + "/employer/view-posted-jobs?id="+JSON.parse(localStorage.UserAuth)._id)
         .then((response) => {
           if (response.data.resp === 1) {
             console.log(response);
@@ -33,20 +34,17 @@ class ViewJobPosted extends Component {
   deleteJob = (id, title, category) => {
     let confirm = confirmDelete();
     if (confirm) {
-      axios.post("/delete-route", {
-        title,
-        category,
-      });
+      // axios.post("/api/delete-job?id="+id);
 
       axios
-        .delete(`${apiPath}/employer/delete-job/${id}`)
+        .delete(`${apiPath}/employer/delete-job?id=${id}`)
         .then((response) => {
           console.log(response);
           if (response.data.resp === 1) {
             //throw alert
-            alert("Successfully Deleted");
+            NotificationManager.success('Successfully Deleted', 'Done');            
             //update state
-            let jobs = this.state.jobs.filter((item) => item.id !== id);
+            let jobs = this.state.jobs.filter((item) => item._id !== id);
 
             console.log(jobs);
             this.setState({
@@ -99,7 +97,7 @@ class ViewJobPosted extends Component {
                           title="Remove Job"
                           onClick={(e) => {
                             e.preventDefault();
-                            this.deleteJob(item.id, item.title, item.category);
+                            this.deleteJob(item._id);
                           }}
                         >
                           <i className="fas fa-trash"></i>

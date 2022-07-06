@@ -4,11 +4,14 @@ let jobPostSchema = mongoose.Schema({
   category: String,
   type: String,
   title: String,
+  slug:String,
   experience: String,
   qualification: String,
   description: String,
   salary: String,
-  expiry_date: String,
+  deadline: String,
+  expiry_date:String,
+  employer:{}
 });
 
 let jobs = mongoose.model("PostNewjob", jobPostSchema);

@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Editor from "../widgets/Editor";
+
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+
 import {
   DEFAULT_JOB_LEVELS,
   DEFAULT_JOB_CATEGORIES,
@@ -12,7 +15,27 @@ import { validatePostNewJob } from "../utils/Helpers";
 import ErrorMessage from "../components/ErrorMessage";
 import moment from "moment";
 
+
+function diffDate(date1, date2)
+{
+    var daysDiff = Math.ceil((Math.abs(date1 - date2)) / (1000 * 60 * 60 * 24));
+
+    var years = Math.floor(daysDiff / 365.25);
+    var remainingDays = Math.floor(daysDiff - (years * 365.25));
+    var months = Math.floor((remainingDays / 365.25) * 12);
+    var days = Math.ceil(daysDiff - (years * 365.25 + (months / 12 * 365.25)));
+
+    return {
+        daysAll: daysDiff,
+        years: years,
+        months: months,
+        days:days
+    }
+}
+
 class PostNewJob extends Component {
+
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -30,6 +53,8 @@ class PostNewJob extends Component {
     console.log(moment());
   }
 
+  
+
   setError = (message) => {
     this.setState({
       error: message,
@@ -46,18 +71,32 @@ class PostNewJob extends Component {
 
 
 
-
-
-    axios.post(apiPath + "http://localhost:8080/employer/post-new-job", {
+    let data = {
       ...this.state,
-    })
+      employer:localStorage.UserAuth ? JSON.parse(localStorage.UserAuth) : {}
+    };
+
+    let resp =  diffDate(new Date(data.expiry_date), new Date());
+
+    let years = resp.years ? resp.years + " years," : "";
+    let months = resp.months ? resp.months + " months " :"";
+    let days = resp.days ? resp.days + " days" :"";
+
+    data.deadline = years + months + days + " from now";
+
+    data.slug = data.title.replace(/ /,"-");
+
     axios.post(apiPath + "/employer/post-new-job", {
-        ...this.state,
-      })
+      data,
+    })
+    // axios.post(apiPath + "/employer/post-new-job", {
+    //     ...this.state,
+    //   })
       .then((response) => {
         if (response.data.resp === 1) {
           //show success message
-          alert("Successfuly job posted");
+          NotificationManager.success('Successfuly job posted', 'Done');            
+          // alert("Successfuly job posted");
           //reset state and form values
           Object.keys(this.state).forEach((key, index) => {
             this.setState({

@@ -18,6 +18,8 @@ import JobPage from "./JobPage";
 import Navbar from "./Navbar";
 import NotFound from "../components/NotFound";
 
+import ContactUs from '../components/ContactUs/ContactUs';
+
 function RootContainer() {
   // Add a request interceptor if authenticated
   const { auth } = React.useContext(AuthContext);
@@ -50,8 +52,10 @@ function RootContainer() {
           <Route path="/job/:slug">
             <JobPage />
           </Route>
+          
 
           <Route path="/home" render={() => <Redirect to="/" />} />
+          <Route path="/contact-us" render={() => <ContactUs />} />
 
           <PrivateRoute
             path="/register"

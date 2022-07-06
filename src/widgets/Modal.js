@@ -10,8 +10,10 @@ class Modal extends React.Component {
 
     return (
       <div
+      id="some"
         className="backdrop"
         style={{
+          visibility: this.props.show? "visible" :"hidden",
           position: "fixed",
           top: 0,
           bottom: 0,
@@ -20,6 +22,7 @@ class Modal extends React.Component {
           zIndex: 100,
           backgroundColor: "rgba(0,0,0,0.3)",
           padding: 50,
+          width:"100vw"
         }}
       >
         <div

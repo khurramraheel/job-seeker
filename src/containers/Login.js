@@ -10,6 +10,7 @@ import useErrorHandler from "../utils/custom-hooks/ErrorHandler";
 import { AuthContext } from "../contexts/AuthContext";
 /** Utils */
 import { apiRequest, validateLoginForm, printError, removeError } from "../utils/Helpers";
+import { NotificationManager } from "react-notifications";
 
 const Login = (props) => {
   const { setAuthStatus } = React.useContext(AuthContext);
@@ -25,22 +26,24 @@ const Login = (props) => {
     removeError();
 
     try {
-      const data = await apiRequest("/login", "post", {
-        email: userEmail,
-        password: userPassword,
-        entity: userEntity,
-      });
-
-      // const data1 = await apiRequest(apiPath + "/login", "post", {
+      // const data = await apiRequest("/login", "post", {
       //   email: userEmail,
       //   password: userPassword,
       //   entity: userEntity,
-      // }); 
+      // });
+
+      const data = await apiRequest(apiPath + "/login", "post", {
+        email: userEmail,
+        password: userPassword,
+        entity: userEntity,
+      }); 
 
       if (data.resp === 1) {
-        const {email, entity, token } = data.user;
-        setAuthStatus({email, entity ,token });
+        // const {email, entity, token } = data.user;
+        setAuthStatus({...data.user });
+        // setAuthStatus({...data.user });
       } else if (data.resp === 0) {
+        NotificationManager.error("Invaid Credentails", "Error");
         showError(data.message);
       }else{
          printError(data);

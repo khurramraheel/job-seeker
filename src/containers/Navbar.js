@@ -61,11 +61,11 @@ function Navbar({ history, match, location }) {
           <div className="col-6 col-lg-3">
             <div className="Navbar__logo-box">
               <Link to="/">
-                <img src={Logo} alt="Logo" />
+                <img src="/images/logo.png" alt="Logo" />
               </Link>
             </div>
           </div>
-          <div className="col-6 col-lg-4">
+          <div>
             {/* desktop menu */}
             <div className="desktop-menu-wrapper d-none d-lg-block">
               {isAuthenticated ? (
@@ -104,6 +104,16 @@ function Navbar({ history, match, location }) {
                     <div className="default-menu">
                       {/* // inline menu for unprotected routes  start*/}
                       <ul>
+                      <li>
+                          <Link to="/">
+                            <i>Home</i>
+                          </Link>
+                        </li>
+                      <li>
+                          <Link to="/contact-us">
+                            <i>Contact Us</i>
+                          </Link>
+                        </li>
                         <li>
                           <Link to={`/${entity}`}>
                             <i>My Account</i>
