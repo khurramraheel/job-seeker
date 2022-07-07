@@ -17,6 +17,7 @@ import {
 } from "../utils/Helpers";
 import SignupHeader from "./SignupHeader";
 import Axios from "axios";
+import { NotificationManager } from "react-notifications";
 
 const Register = (props) => {
 
@@ -65,7 +66,7 @@ const Register = (props) => {
             setUserEmail("");
             setUserPassword("");
             setConfirmPassword("");
-            alert(response.data.message);
+            NotificationManager.success("User created successfully", "Done");
           } else {
             showError(response.data.message);
           }

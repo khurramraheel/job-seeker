@@ -25,7 +25,7 @@ class Employer extends Component {
 
   fetchData = () => {
     axios
-      .get(apiPath + "/employer")
+      .get(apiPath + "/employer?id="+    JSON.parse(localStorage.UserAuth)._id)
       .then((response) => {
         if (response.data.resp === 1) {
           this.setState({
@@ -86,7 +86,7 @@ class Employer extends Component {
                 <Switch>
                   <Route path={`${this.props.match.path}`} exact>
                     <EmployerLanding
-                      totalApplicants={this.state.total_applicants}
+                    totalApplicants={this.state.total_applicants}
                       totalJobsPosted={this.state.total_jobs_posted}
                       fetchData={this.fetchData}
                     />

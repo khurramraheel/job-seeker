@@ -4,6 +4,10 @@ import RootContainer from "./containers/RootContainer";
 import NotificationContainer from "react-notifications/lib/NotificationContainer";
 import 'react-notifications/lib/notifications.css';
 
+import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
+
+
+
 import './app.css';
 
 function App() {

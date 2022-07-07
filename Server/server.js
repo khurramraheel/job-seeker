@@ -24,6 +24,9 @@ myApp.post("/api/userRegister", async (req, resp) => {
     req.body.id = Math.random(Math.random() * 100000);
     let newUser = new Users(req.body);
     await newUser.save();
+    resp.json({
+      resp:1
+    });
   } catch (e) {
     resp.json({
       success: true,
@@ -171,6 +174,173 @@ myApp.get("/api/employer/view-posted-jobs", async (req, res) => {
 
   });
 
+
+  myApp.post("/api/employer/edit-profile", async (req, res) => {
+
+    try{
+
+      let user = await Users.findByIdAndUpdate(req.body._id, req.body);
+      res.json({
+        resp:1,
+        user
+      });
+      
+    }catch(e){
+      res.json({
+        resp:0
+      })
+    }
+
+  });
+  
+  myApp.post("/api/jobseeker/edit-profile", async (req, res) => {
+
+    try{
+
+      let user = await Users.findByIdAndUpdate(req.body._id, req.body);
+      res.json({
+        resp:1,
+        user
+      });
+      
+    }catch(e){
+      res.json({
+        resp:0
+      })
+    }
+
+  });
+
+
+
+
+  myApp.get("/api/employer", async (req, res) => {
+
+
+    try{
+
+      let jobs =  await Jobs.find({"employer._id":req.query.id})
+
+      let totalApplications = 0;
+
+      let jobApplications = await Promise.all(jobs.map(async (job)=>{
+         
+        let applcations = await JobApplication.find({job_id:job._id});
+        totalApplications += applcations.length;
+
+      }));
+
+      res.json({
+        resp:1,
+        result:{
+          total_applicants:totalApplications,
+          total_jobs_posted:jobs.length
+        }
+      })
+      
+    }catch(e){
+
+
+    }
+
+  });
+  myApp.get("/api/employer/edit-profile", async (req, res) => {
+
+    try{
+
+      let user = await Users.findById(req.query.id);
+      res.json({
+        resp:1,
+        user
+      });
+      
+    }catch(e){
+      res.json({
+        resp:0
+      })
+    }
+
+  });
+
+  myApp.get("/api/jobseeker/edit-profile", async (req, res) => {
+
+    try{
+
+      let user = await Users.findById(req.query.id);
+      res.json({
+        resp:1,
+        user
+      });
+      
+    }catch(e){
+      res.json({
+        resp:0
+      })
+    }
+
+  });
+
+  myApp.post("/api/search", async (req, res) => {
+
+    try{
+
+      let   jobs;
+
+      if(req.body.keyword){
+        let reg = new RegExp(req.body.keyword,"i");
+
+        jobs = await Jobs.find({title:reg})
+
+        
+        
+      }else{
+
+        if(!req.body.type){
+          req.body.type = {list:[]}
+        }
+
+        if(!req.body.category){
+          req.body.category = {list:[]}
+        }
+
+        if(!req.body.level){
+          req.body.level = {list:[]}
+        }
+
+
+        let mArray = [];
+
+        req.body.type.list.forEach((item)=>{
+          mArray.push(item);
+        });
+
+        req.body.category.list.forEach(item=>{
+          mArray.push(item)
+        })
+
+        req.body.level.list.forEach(item=>{
+          mArray.push(item)
+        })
+
+
+        // [...req.body.category.list, ...req.body.type.list, , ...req.body.level.list]
+
+        jobs = await Jobs.find({$or:mArray})
+      }
+
+      res.json({
+        resp:1,
+        jobs:{data:jobs,total:jobs.length}
+      });
+
+
+    }catch(e){
+      res.json({
+        resp:0
+      })
+    }
+    
+  });
   
 myApp.post("/api/login", async (req, resp) => {
   try {

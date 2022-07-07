@@ -25,7 +25,7 @@ class EditJobseekerProfile extends Component {
 
   componentDidMount() {
     axios
-      .get(apiPath + "/employer/edit-profile")
+      .get(apiPath + "/jobseeker/edit-profile?id="+    JSON.parse(localStorage.UserAuth)._id)
       .then((response) => {
         if (response.data.resp === 1) {
           this.setState({
@@ -43,21 +43,20 @@ class EditJobseekerProfile extends Component {
     const apiPath = process.env.REACT_APP_API_URL;
     removeError();
 
-    let formData = new FormData(document.getElementById("edit-jobseeker"));
-    formData.append("description", this.state.description);
+    // let formData = new FormData(document.getElementById("edit-jobseeker"));
+    // formData.append("description", this.state.description);
 
-    let genderValue = document.querySelector('input[name="gender"]:checked')
-      .value;
-    formData.append("gender", genderValue);
+    // let genderValue = document.querySelector('input[name="gender"]:checked')
+    //   .value;
+    // formData.append("gender", genderValue);
 
-    console.log(genderValue);
+    // console.log(genderValue);
+
+    
+
 
     axios
-      .post(apiPath + "/jobseeker/edit-profile", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+      .post(apiPath + "/jobseeker/edit-profile", this.state)
       .then((response) => {
         if (response.data.resp === 1) {
           //show success message
@@ -183,7 +182,7 @@ class EditJobseekerProfile extends Component {
               />
             </div>
             <div className="col-lg-6 mt-4 mt-lg-0">
-              <div className="row no-gutters mt-lg-2">
+              {/* <div className="row no-gutters mt-lg-2">
                 <label className="radio-wrapper col-3  ml-5  ml-lg-4">
                   <input
                     type="radio"
@@ -217,7 +216,7 @@ class EditJobseekerProfile extends Component {
                   <span className="checkmark"></span>
                   Other
                 </label>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -232,15 +231,15 @@ class EditJobseekerProfile extends Component {
             />
           </div>
 
-          <div className="form-group my-30">
+          {/* <div className="form-group my-30">
             <Editor
               placeholder="Write about yourself ....."
               handleChange={this.updateDescription || ""}
               editorHtml={this.state.description}
             />
-          </div>
+          </div> */}
 
-          <div className="form-group my-30">
+          {/* <div className="form-group my-30">
             <div className="custom-file">
               <input
                 type="file"
@@ -252,9 +251,9 @@ class EditJobseekerProfile extends Component {
                 {this.state.profile_label}
               </label>
             </div>
-          </div>
+          </div> */}
 
-          <div className="form-group my-30">
+          {/* <div className="form-group my-30">
             <div className="custom-file">
               <input
                 type="file"
@@ -266,7 +265,7 @@ class EditJobseekerProfile extends Component {
                 {this.state.cv_label}
               </label>
             </div>
-          </div>
+          </div> */}
 
           <div className="form-submit mt-30 mb-3">
             <button type="submit" className="post-job-btn b-0 px-3 primary">

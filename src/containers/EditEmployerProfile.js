@@ -4,6 +4,7 @@ import axios from "axios";
 import { AuthContext } from "../contexts/AuthContext";
 import { printError, removeError } from "../utils/Helpers";
 import { apiPath } from "../utils/Consts";
+import { NotificationManager } from "react-notifications";
 
 class EditCompanyProfile extends Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class EditCompanyProfile extends Component {
   componentDidMount() {
 
     axios
-      .get(apiPath + "/employer/edit-profile")
+      .get(apiPath + "/employer/edit-profile?id="+    JSON.parse(localStorage.UserAuth)._id)
       .then((response) => {
         if (response.data.resp === 1) {
           this.setState({
@@ -56,7 +57,7 @@ class EditCompanyProfile extends Component {
       .then((response) => {
         if (response.data.resp === 1) {
           //show success message
-          alert("Successfuly edited profile");
+          NotificationManager.success("Successfuly edited profile");
 
           //uodate context values
           const { setAuthStatus } = this.context;
@@ -168,15 +169,15 @@ class EditCompanyProfile extends Component {
             />
           </div>
 
-          <div className="form-group my-30">
+          {/* <div className="form-group my-30">
             <Editor
               placeholder="Write about your company ....."
               handleChange={this.updateDescription || ""}
               editorHtml={this.state.description}
             />
-          </div>
+          </div> */}
 
-          <div className="form-group my-30">
+          {/* <div className="form-group my-30">
             <div className="custom-file">
               <input
                 type="file"
@@ -188,9 +189,9 @@ class EditCompanyProfile extends Component {
                 {this.state.logo_label}
               </label>
             </div>
-          </div>
+          </div> */}
 
-          <div className="form-group my-30">
+          {/* <div className="form-group my-30">
             <div className="custom-file">
               <input
                 type="file"
@@ -202,7 +203,7 @@ class EditCompanyProfile extends Component {
                 {this.state.cover_label}
               </label>
             </div>
-          </div>
+          </div> */}
 
           <div className="form-submit mt-30 mb-3">
             <button

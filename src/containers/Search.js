@@ -66,13 +66,51 @@ export default withRouter((props) => {
     filterJobs();
   };
 
+
+  const getProp = (prop)=>{
+
+    switch(prop){
+
+      case "Job Category":        
+        return "category";
+
+      case "Employment Type":
+        return "type";
+
+      case "Job Level":
+        return "level";
+
+    }
+
+  }
+ 
+  
+
   //search based on filter form params & search keyword val
   const filterJobs = () => {
     setIsLoading(true);
-    let formData = new FormData(document.getElementById("searchPageForm"));
-    formData.append("keyword", keyword);
+  
+    let query = {};
 
-    ajaxFetchJobs(formData);
+   let tags = [...document.querySelectorAll("#searchPageForm input:checked")].map(item=>item);
+
+    tags.forEach((tag)=>{
+
+      let category = tag.parentNode.parentNode.parentNode.previousElementSibling.innerText;
+
+      if(!query[getProp(category)]){
+        
+        query[getProp(category)] = {list:[{[getProp(category)]:tag.value}]};
+
+      }else{
+
+        query[getProp(category)].list.push({[getProp(category)]:tag.value});
+
+      }
+
+    });
+
+    ajaxFetchJobs(query);
     setIsLoading(false);
   };
 

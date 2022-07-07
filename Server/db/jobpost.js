@@ -3,6 +3,7 @@ let mongoose = require("mongoose");
 let jobPostSchema = mongoose.Schema({
   category: String,
   type: String,
+  level: String,
   title: String,
   slug:String,
   experience: String,
