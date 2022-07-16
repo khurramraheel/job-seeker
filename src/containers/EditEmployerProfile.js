@@ -44,16 +44,12 @@ class EditCompanyProfile extends Component {
     const apiPath = process.env.REACT_APP_API_URL;
     removeError();
 
-    let formData = new FormData(document.getElementById("edit-company"));
-    formData.append("description", this.state.description);
-    console.log(formData);
+    // let formData = new FormData(document.getElementById("edit-company"));
+    // formData.append("description", this.state.description);
+    // console.log(formData);
 
     axios
-      .post(apiPath + "/employer/edit-profile", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+      .post(apiPath + "/employer/edit-profile", this.state)
       .then((response) => {
         if (response.data.resp === 1) {
           //show success message
